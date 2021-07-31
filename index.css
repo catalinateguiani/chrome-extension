@@ -17,10 +17,17 @@ button {
   background: #4b6110;
   color: white;
   padding: 10px 20px;
-  border: none;
+  border: 1px solid #4b6110;
   font-weight: bold;
   margin-bottom: 5px;
 }
+
+#delete-btn {
+  background: white;
+  color: #4b6110;
+  
+}
+
 ul {
   margin-top: 20px;
   list-style: none;
