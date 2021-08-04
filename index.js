@@ -1,4 +1,4 @@
-let myLeads=[]
+let myLeads = [];
 
 // let myLeads = `["www.hotnews.com"]`;
 
@@ -12,22 +12,33 @@ let myLeads=[]
 
 // console.log(typeof myLeads)
 
-
 const inputEl = document.getElementById("input-el");
 const inputBtn = document.getElementById("input-btn");
 const ulEl = document.getElementById("ul-el");
-const deleteBtn = document.getElementById("delete-btn")//store the delete button in a variable
+const deleteBtn = document.getElementById("delete-btn"); //store the delete button in a variable
+const tabBtn = document.getElementById("tab-btn");
 
-
-const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"))
+const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"));
 
 if (leadsFromLocalStorage) {
-
-  myLeads = leadsFromLocalStorage
-  renderLeads(myLeads)
+  myLeads = leadsFromLocalStorage;
+  render(myLeads);
 }
 
-function renderLeads(leads) {
+const tabs = [{ url: "hotnews.com" }];
+
+tabBtn.addEventListener("click", () => {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    console.log(tabs);
+  });
+  
+  // console.log(tabs[0].url);
+  myLeads.push(tabs[0].url);
+  localStorage.setItem("myLeads", JSON.stringify(myLeads));
+  render(myLeads);
+});
+
+function render(leads) {
   let listItems = "";
   for (let i = 0; i < leads.length; i++) {
     listItems += `<li> <a target='_blank' href= '${leads[i]}'> ${leads[i]} </a> </li> `;
@@ -36,22 +47,17 @@ function renderLeads(leads) {
   ulEl.innerHTML = listItems;
 }
 
-
 deleteBtn.addEventListener("dblclick", () => {
-  localStorage.clear()
-  myLeads = []
-  renderLeads(myLeads)
-})
-
+  localStorage.clear();
+  myLeads = [];
+  render(myLeads);
+});
 
 inputBtn.addEventListener("click", () => {
   myLeads.push(inputEl.value);
   inputEl.value = "";
 
   // myLeads = JSON.stringify(myLeads)
-  localStorage.setItem("myLeads", JSON.stringify(myLeads))
-  renderLeads(myLeads);
+  localStorage.setItem("myLeads", JSON.stringify(myLeads));
+  render(myLeads);
 });
-
-
-
