@@ -25,17 +25,12 @@ if (leadsFromLocalStorage) {
   render(myLeads);
 }
 
-const tabs = [{ url: "hotnews.com" }];
-
 tabBtn.addEventListener("click", () => {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    console.log(tabs);
+    myLeads.push(tabs[0].url);
+    localStorage.setItem("myLeads", JSON.stringify(myLeads));
+    render(myLeads);
   });
-  
-  // console.log(tabs[0].url);
-  myLeads.push(tabs[0].url);
-  localStorage.setItem("myLeads", JSON.stringify(myLeads));
-  render(myLeads);
 });
 
 function render(leads) {
